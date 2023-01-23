@@ -13,6 +13,6 @@ namespace Domain.Entities
         public ProductStatus ProductStatus { get; private set; }
         public DateTime FabricationDate { get; private set; }
         public DateTime LimitDate { get; private set; }
-        public Provider Provider { get; private set; }
+        public virtual Provider Provider { get; private set; }
     }
 }
