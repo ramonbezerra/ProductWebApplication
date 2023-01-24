@@ -6,24 +6,16 @@ namespace Infra.Context
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             base.OnModelCreating(modelBuilder);
             
-            modelBuilder.Entity<ProductStatus>().HasNoKey();
-            modelBuilder.Ignore<ProductStatus>();
-            
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Provider)
-                .WithOne(p => p.Product)
-                .HasForeignKey<Provider>(p => p.ProductId);
+            //modelBuilder.Entity<Product>()
+            //    .HasOne(p => p.Provider)
+            //    .WithOne(p => p.Product)
+            //    .HasForeignKey<Provider>(p => p.ProductId);
             modelBuilder.Entity<Product>(new ProductMap().Configure);
         }
 

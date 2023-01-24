@@ -8,11 +8,13 @@ namespace Domain.Entities
 {
     public class Product : BaseEntity
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public ProductStatus ProductStatus { get; private set; }
-        public DateTime FabricationDate { get; private set; }
-        public DateTime LimitDate { get; private set; }
-        public virtual Provider Provider { get; private set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public ProductStatus Status { get; set; } = ProductStatus.Active;
+        public DateTime FabricationDate { get; set; }
+        public DateTime LimitDate { get; set; }
+        public string ProviderDescription { get; set; }
+        public string ProviderCnpj { get; set; }
+        //public virtual Provider Provider { get; private set; }
     }
 }

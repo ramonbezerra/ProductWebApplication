@@ -9,10 +9,10 @@ namespace Domain.Interfaces
 {
     public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        void Insert(TEntity entity);
+        TEntity Insert(TEntity entity);
         IEnumerable<TEntity> GetAll();
         TEntity GetById(int id);
-        void Update(TEntity entity);
+        TEntity Update(TEntity entity);
         void Delete(int id);
     }
 }

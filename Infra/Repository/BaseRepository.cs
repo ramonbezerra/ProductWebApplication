@@ -33,14 +33,20 @@ namespace Infra.Repository
             return query.Any() ? query.FirstOrDefault() : null;
         }
 
-        public void Insert(TEntity entity)
+        public TEntity Insert(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
+            _context.SaveChanges();
+
+            return entity;
         }
 
-        public void Update(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);
+            _context.SaveChanges();
+
+            return entity;
         }
     }
 }

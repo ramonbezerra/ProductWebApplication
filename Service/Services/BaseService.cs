@@ -26,7 +26,15 @@ namespace Service.Services
 
         public IEnumerable<TEntity> GetAll() => _baseRepository.GetAll();
 
-        public TEntity GetById(int id) => _baseRepository.GetById(id);
+        public TEntity GetById(int id)
+        {
+            var entity = _baseRepository.GetById(id);
+            
+            if (entity == null)
+                throw new Exception("Registro não encontrado no banco de dados!");
+            
+            return entity;
+        }
 
         public TEntity Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
         {

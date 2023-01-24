@@ -13,7 +13,9 @@ namespace Infra.Mapping
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            
+            builder.Property(prop => prop.Name)
+                .HasConversion(prop => prop.ToString(), prop => prop)
+                .IsRequired();
         }
     }
 }

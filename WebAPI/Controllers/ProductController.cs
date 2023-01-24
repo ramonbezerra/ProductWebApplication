@@ -2,7 +2,10 @@
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Service.Services;
 using Service.Validators;
+using WebAPI.Filter;
+using WebAPI.Wrappers;
 
 namespace WebAPI.Controllers
 {
@@ -10,39 +13,48 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private IBaseService<Product> _baseProductService;
+        private ProductService _productService;
 
-        public ProductController(IBaseService<Product> baseProductService)
+        public ProductController(ProductService baseProductService)
         {
-            _baseProductService = baseProductService;
+            _productService = baseProductService;
         }
 
         // GET: api/<ProductController>
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll([FromQuery] PaginationFilter filter)
         {
-            return Execute(() => _baseProductService.GetAll());
+            var validFilter = new PaginationFilter(filter.PageNumber);
+            
+            IEnumerable<Product> data = _productService.GetAll();
+            
+            var pagedData = data
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(filter.PageSize)
+                .ToList();
+
+            return Ok(new PagedResponse<List<Product>>(pagedData, validFilter.PageNumber, validFilter.PageSize, data.Count()));
         }
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Execute(() => _baseProductService.GetById(id));
+            return Execute(() => _productService.GetById(id));
         }
 
         // POST api/<ProductController>
         [HttpPost]
         public IActionResult Post([FromBody] Product product)
         {
-            return Execute(() => _baseProductService.Add<ProductValidator>(product).Id);
+            return Execute(() => _productService.Add<ProductValidator>(product));
         }
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Product product)
         {
-            return Execute(() => _baseProductService.Update<ProductValidator>(product));
+            return Execute(() => _productService.Update<ProductValidator>(product));
         }
 
         // DELETE api/<ProductController>/5
@@ -51,7 +63,7 @@ namespace WebAPI.Controllers
         {
             Execute(() =>
             {
-                _baseProductService.Delete(id);
+                _productService.DeleteLogic(id);
                 return true;
             });
             return new NoContentResult();
@@ -63,11 +75,16 @@ namespace WebAPI.Controllers
             {
                 var result = func();
 
-                return Ok(result);
+                return Ok(new Response<object>(result));
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var response = new Response<object>
+                {
+                    Message = ex.Message,
+                    Succeeded = false
+                };
+                return BadRequest(response);
             }
         }
     }

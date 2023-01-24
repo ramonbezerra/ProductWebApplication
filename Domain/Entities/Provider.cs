@@ -8,8 +8,8 @@ namespace Domain.Entities
 {
     public class Provider : BaseEntity
     {
-        public string ProviderDescription { get; private set; }
-        public string ProviderCNPJ { get; private set; }
+        public string Description { get; private set; }
+        public string Cnpj { get; private set; }
         public int ProductId { get; private set; }
         public virtual Product Product { get; private set; }
     }
