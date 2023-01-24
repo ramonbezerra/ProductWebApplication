@@ -15,6 +15,5 @@ namespace Domain.Entities
         public DateTime LimitDate { get; set; }
         public string ProviderDescription { get; set; }
         public string ProviderCnpj { get; set; }
-        //public virtual Provider Provider { get; private set; }
     }
 }

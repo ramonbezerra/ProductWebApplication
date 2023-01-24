@@ -12,10 +12,6 @@ namespace Infra.Context
         {
             base.OnModelCreating(modelBuilder);
             
-            //modelBuilder.Entity<Product>()
-            //    .HasOne(p => p.Provider)
-            //    .WithOne(p => p.Product)
-            //    .HasForeignKey<Provider>(p => p.ProductId);
             modelBuilder.Entity<Product>(new ProductMap().Configure);
         }
 
